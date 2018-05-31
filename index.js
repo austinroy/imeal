@@ -13,8 +13,8 @@ mongoose.connect('mongodb://localhost/imeal', () => {
     console.log("Connected to DB");
 });
 
-app.use('/user/', userRoutes );
-app.use('/meals/', mealRoutes);
+app.use('/', userRoutes );
+app.use('/', mealRoutes);
 
 app.listen(8080, () => {
     console.log("App running on port 8080")

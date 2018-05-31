@@ -1,27 +1,28 @@
 import express from 'express';
 import User from '../models/users';
 import jwt from 'jsonwebtoken';
+import config from '../../config';
+
+const secretKey = config.SECRET_KEY;
 
 const router = express.Router();
 
 const getUser = (req, res) => {
     const credentials = {
         username : req.body.username,
-        password : req.body.password,
     }
-    return User.find(credentials, (err, users) => {
+    return User.findOne(credentials,(err, user) => {
         if(err){
             return res.status(500).json({
-                message: "Error finding user"
+                message: "Error finding user",
+                err
             })
         } else {
-            if(users == []){
+            if(!user){
                 return res.status(404).json({
-                    message: "User not found"
+                   message : "User not found", 
                 })
-            }
-            else {
-                const user = users[0]
+            } else {
                 return user;
             }
         }
@@ -34,11 +35,13 @@ router.post('/signup', (req, res) => {
             message : "Please provide all the details"
         })
     } else {
-        const newUser = User(req.body);
-        newUser.save( err => {
+        const newUser = new User(req.body);
+        newUser.save((err) => {
+            console.log(err);
             if(err) {
                 return res.status(500).json({
-                    message : "Error Adding New User"
+                    message : "Error Adding New User",
+                    err
                 })
             } else {
                 return res.status(201).json({
@@ -53,12 +56,22 @@ router.post('/signup', (req, res) => {
 
 router.post('/login', (req, res) => {
     return getUser(req, res).then(user => {
-        const {username} = user
-        const token = jwt.sign({ username }, 'secret')
-        return res.status(200).json({
-            message : "User signed in successfully",
-            token
-        })
+        const validCredentials = user.comparePassword(req.body.password);
+
+        if(!validCredentials){
+            return res.status(403).json({
+                message : "Invalid credentials"
+            })
+        } else {
+            const {username, id } = user;
+            const userInfo = {username, id}
+            const token = jwt.sign( userInfo, secretKey,{ expiresIn : 3600});
+            return res.json({
+                message : "Logged in successfully",
+                user : userInfo,
+                token
+            })
+        }
     })
 })
 
