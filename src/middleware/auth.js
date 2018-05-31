@@ -4,19 +4,19 @@ import config from '../../config';
 const secretKey = config.SECRET_KEY;
 
 const auth = (req, res, next) => {
-    const token = req.headers['Authorization']
+    const token = req.headers['x-access-token'] || req.body.token
 
     if(token){
-        jwt.decode(token, secretKey).then((err,decoded) => {
+        jwt.verify(token, secretKey, function(err, decoded) {
             if(err){
                 return res.status(500).json({
-                    message : "Error deccoding token"
+                    message : "Invalid token"
                 })
             } else {
                 req.decoded = decoded;
                 next();
             }
-        })
+        });
     } else {
         return res.status(401).json({
             message : "No token"

@@ -3,17 +3,13 @@ import bcrypt from 'bcrypt';
 import uniqueValidator from 'mongoose-unique-validator';
 
 
-const userSchema = mongoose.Schema({
+const userSchema = Schema({
     username : {
         type : String,
         unique : true,
         required : true,
     },
-    password : String,
-    meals : [{
-        type : Schema.Types.ObjectId,
-        ref : 'Meal'
-    }]
+    password : String
 })
 
 userSchema.pre('save', function(next){

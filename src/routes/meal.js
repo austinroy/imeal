@@ -1,31 +1,8 @@
 import express from 'express';
 import Meal from '../models/meals';
-import User from '../models/users';
+import auth from '../middleware/auth';
 
 const router = express.Router();
-
-const getUser = (req, res) => {
-    const query = {
-        userid : req.params.userid,
-    }
-    return User.find(query, (err, users) => {
-        if(err){
-            return res.status(500).json({
-                message: "Error finding user"
-            })
-        } else {
-            if(users == []){
-                return res.status(404).json({
-                    message: "User not found"
-                })
-            }
-            else {
-                const user = users[0]
-                return user;
-            }
-        }
-    })
-}
 
 const getMeal = (req, res) => { 
     const { id } = req.params;
@@ -44,16 +21,22 @@ const getMeal = (req, res) => {
 })
 }
 
-router.post('/:userid/meals', (req, res) => {
-    const user = getUser(req, res);
-    console.log(user);
+router.post('/:userid/meals', auth,(req, res) => {
+    const userid = req.decoded.id
     if(!req.body.name || !req.body.category || !req.body.amount){
         return res.status(400).json({
             message : "Please provide all meal details"
         })
     } else {
         const time = new Date();
-        const meal = new Meal(req.body, time)
+        const newMeal = {
+            name : req.body.name,
+            category : req.body.category,
+            amount : req.body.amount,
+            userid,
+            timeEaten : time
+        }
+        const meal = new Meal(newMeal)
         meal.save( err => {
             if(err){
                 return res.status(500).json({
@@ -69,7 +52,7 @@ router.post('/:userid/meals', (req, res) => {
     }
 })
 
-router.get('/:userid/meals', (req, res) => {
+router.get('/:userid/meals', auth, (req, res) => {
     const query = {}
     Meal.find(query, (err, meals) => {
         if(err){
@@ -82,14 +65,14 @@ router.get('/:userid/meals', (req, res) => {
     })
 })
 
-router.get('/:userid/meals/:id', (req, res) => {
+router.get('/:userid/meals/:id',auth, (req, res) => {
     console.log(req.params)
     return getMeal(req, res).then(meal =>{
         return res.status(200).json(meal)
     })
 })
 
-router.put('/:userid/meals/:id', (req, res) => {
+router.put('/:userid/meals/:id',auth, (req, res) => {
     return getMeal(req, res).then( meal => {
         meal.name = req.body.name;
         meal.category = req.body.name;
@@ -109,7 +92,7 @@ router.put('/:userid/meals/:id', (req, res) => {
     })
 })
 
-router.delete('/:userid/meals/:id', (req, res) => {
+router.delete('/:userid/meals/:id', auth, (req, res) => {
     return getMeal(req, res).then( meal => {
         meal.remove(err =>{
             if(err){

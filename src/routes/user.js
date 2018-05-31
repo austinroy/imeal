@@ -37,7 +37,6 @@ router.post('/signup', (req, res) => {
     } else {
         const newUser = new User(req.body);
         newUser.save((err) => {
-            console.log(err);
             if(err) {
                 return res.status(500).json({
                     message : "Error Adding New User",

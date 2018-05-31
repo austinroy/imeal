@@ -5,7 +5,7 @@ const mealSchema = new mongoose.Schema({
     amount : String,
     category : String,
     timeEaten : Date,
-    user : {
+    userid : {
         type : Schema.Types.ObjectId,
         ref : 'User'
     }
