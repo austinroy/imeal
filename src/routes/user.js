@@ -55,6 +55,7 @@ router.post('/signup', (req, res) => {
 
 router.post('/login', (req, res) => {
     return getUser(req, res).then(user => {
+        
         const validCredentials = user.comparePassword(req.body.password);
 
         if(!validCredentials){
@@ -71,6 +72,9 @@ router.post('/login', (req, res) => {
                 token
             })
         }
+    }).catch(err => {
+        return console.log(err);
+        
     })
 })
 
