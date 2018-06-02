@@ -27,3 +27,5 @@ app.use('/', mealRoutes);
 app.listen(8080, () => {
     console.log("App running on port 8080")
 })
+
+export default app;
