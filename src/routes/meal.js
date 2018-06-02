@@ -75,7 +75,7 @@ router.get('/:userid/meals/:id',auth, (req, res) => {
 router.put('/:userid/meals/:id',auth, (req, res) => {
     return getMeal(req, res).then( meal => {
         meal.name = req.body.name;
-        meal.category = req.body.name;
+        meal.category = req.body.category;
         meal.amount = req.body.amount;
 
         meal.save(err => {
