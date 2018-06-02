@@ -66,7 +66,6 @@ router.get('/:userid/meals', auth, (req, res) => {
 })
 
 router.get('/:userid/meals/:id',auth, (req, res) => {
-    console.log(req.params)
     return getMeal(req, res).then(meal =>{
         return res.status(200).json(meal)
     })

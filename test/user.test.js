@@ -1,17 +1,30 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../index.js')
+const app = require('../index.js');
+const mongoose = require('mongoose');
 
 const should = chai.should();
-console.log();
 
 
 describe('User Tests', () => {
-    chai.use(chaiHttp)
+    chai.use(chaiHttp);
+    before(() => {
+        mongoose.connect('mongodb://localhost/imeal', () => {
+        });
+
+        var db = mongoose.connection;
+        
+        db.collection('meals').drop(function() {
+            console.log("Dropping Meals");
+        }) 
+        db.collection('users').drop(function() {
+            console.log("Dropping Meals");
+        }) 
+    })
     
     it('Should create a new user', done => {
         const userData = {
-            username : "Test User",
+            username : "Test",
             password : "testpass"
         }
         chai.request('http://localhost:8080')
@@ -28,7 +41,7 @@ describe('User Tests', () => {
 
     it('Should login a user', done => {
         const userData = {
-            username : "Test User",
+            username : "Test",
             password : "testpass"
         }
         chai.request('http://localhost:8080')
