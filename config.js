@@ -1,5 +1,5 @@
 const environment = {
-    SECRET_KEY: 'My Key',
+    SECRET_KEY: process.env.SECRET_KEY,
 };
   
 export default environment;
