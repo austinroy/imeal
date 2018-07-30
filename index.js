@@ -28,8 +28,10 @@ app.get('/', (req, res) => res.send({ welcome: 'This is iMeal' }))
 app.use('/', userRoutes );
 app.use('/', mealRoutes);
 
-app.listen(8080, () => {
-    console.log("App running on port 8080")
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log("App running on port ", PORT)
 })
 
 export default app;
