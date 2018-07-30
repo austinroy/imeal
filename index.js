@@ -9,7 +9,11 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: 'true'}));
-app.use(cors());
+app.use(cors({
+    origin :  "http://localhost:3000",
+    optionsSuccessStatus: 200 
+}
+));
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -20,7 +24,7 @@ app.use(function(req, res, next) {
 mongoose.connect('mongodb://localhost/imeal', () => {
     console.log("Connected to DB");
 });
-
+app.get('/', (req, res) => res.send({ welcome: 'This is iMeal' }))
 app.use('/', userRoutes );
 app.use('/', mealRoutes);
 
