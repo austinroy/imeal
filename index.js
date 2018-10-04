@@ -8,6 +8,16 @@ require('dotenv').config();
 
 const app = express();
 
+const PORT = process.env.PORT;
+
+const databaseUrl = process.env.MONGODB_URI;
+
+if (!PORT || !databaseUrl){
+    console.log("Check env variables");
+} else {
+    console.log(`PORT is ${PORT} and db is ${databaseUrl}`)
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: 'true'}));
 app.use(cors({
@@ -22,7 +32,6 @@ app.use(function(req, res, next) {
     next();
   });
 
-const databaseUrl = process.env.DB_URI;
 
 mongoose.connect(databaseUrl, () => {
     console.log("Connected to DB");
@@ -31,7 +40,6 @@ app.get('/', (req, res) => res.send({ welcome: 'This is iMeal' }))
 app.use('/', userRoutes );
 app.use('/', mealRoutes);
 
-const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
     console.log(`App running on port: ${PORT}`)
