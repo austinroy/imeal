@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import userRoutes from './src/routes/user';
-import mealRoutes from './src/routes/meal';
+import userRoutes from './routes/user';
+import mealRoutes from './routes/meal';
 import cors from 'cors';
 require('dotenv').config();
 

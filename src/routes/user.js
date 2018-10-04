@@ -1,7 +1,7 @@
 import express from 'express';
 import User from '../models/users';
 import jwt from 'jsonwebtoken';
-import config from '../../config';
+import config from '../config';
 
 const secretKey = config.SECRET_KEY;
 
