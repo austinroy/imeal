@@ -7,11 +7,11 @@
   "author": "Austin Roy <austin.roy@andela.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "node dist/index.js",
     "test": "mocha --compilers js:babel-core/register --timeout 1000 tests.js",
     "pretest": "node pretest.js",
-    "build": "babel src test -d lib",
-    "heroku-postbuild": "babel src test -d lib"
+    "build": "babel src -d dist",
+    "heroku-postbuild": "yarn build"
   },
   "dependencies": {
     "axios": "^0.18.0",
