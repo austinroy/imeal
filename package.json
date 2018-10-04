@@ -9,8 +9,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
     "test": "mocha --compilers js:babel-core/register --timeout 1000 tests.js",
-    "pretest": "node pretest.js",
-    "heroku-postbuild": "npm install --production"
+    "pretest": "node pretest.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
