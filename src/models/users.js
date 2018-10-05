@@ -4,38 +4,37 @@ import uniqueValidator from 'mongoose-unique-validator';
 
 
 const userSchema = Schema({
-    username : {
-        type : String,
-        unique : true,
-        required : true,
-    },
-    password : String
-})
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: String,
+});
 
-userSchema.pre('save', function(next){
-    const user = this;
+userSchema.pre('save', function save(next) {
+  const user = this;
 
-    if(!user.isModified('password')){
-        next();
-    }
-    // Hash password
-    bcrypt.hash(user.password,256).then((hash, err) => {
-        if(err){
-            return next(err);
-        } else {
-            user.password = hash;
-            next();
-        }
-    })
+  if (!user.isModified('password')) {
+    return next();
+  }
+  // Hash password
+  return bcrypt.hash(user.password, 256)
+    .then((hash, err) => {
+      if (err) {
+        return next(err);
+      }
+      user.password = hash;
+      return next();
+    });
+});
 
-})
+userSchema.methods.comparePassword = function comparePassword(password) {
+  const user = this;
+  return bcrypt.compareSync(password, user.password);
+};
 
-userSchema.methods.comparePassword = function(password){
-    var user = this;
-    return bcrypt.compareSync(password, user.password);
-}
-
-userSchema.plugin(uniqueValidator)
+userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);
 
