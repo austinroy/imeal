@@ -1,20 +1,21 @@
 const mongoose =require('mongoose');
+require('dotenv').config();
 
-mongoose.connect('mongodb://localhost/imeal', () => {
+mongoose.connect(process.env.MONGODB_URI, () => {
 });
 
 var db = mongoose.connection;
 
 const dropUsers = () => {
-    db.collection('users').drop(function(err, response) {
+    return db.collection('users').drop(function(err, response) {
         console.log("response");
-    }) 
+    });
 }
 
 const dropMeals = () => {
-    db.collection('meals').drop(function(err, response) {
+    return db.collection('meals').drop(function(err, response) {
         console.log("response");
-    }) 
+    });
 }
 
 dropMeals();

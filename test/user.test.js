@@ -1,33 +1,38 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../index.js');
+const app = require('../src/index');
 const mongoose = require('mongoose');
 
 const should = chai.should();
 
+chai.use(chaiHttp);
 
 describe('User Tests', () => {
-    chai.use(chaiHttp);
     before(() => {
-        mongoose.connect('mongodb://localhost/imeal', () => {
-        });
-
         var db = mongoose.connection;
-        
-        db.collection('meals').drop(function() {
-            console.log("Dropping Meals");
-        }) 
-        db.collection('users').drop(function() {
-            console.log("Dropping Meals");
-        }) 
-    })
+
+        db.collection('meals').drop()
+            .then(() => console.log("Dropping Meals"))
+            .catch((err) => {
+                if (err.code === 26) {
+                    console.log(`namespace meals not found`);
+                }
+            });
+        db.collection('users').drop()
+            .then(() => console.log("Dropping Users"))
+            .catch((err) => {
+                if (err.code === 26) {
+                    console.log(`namespace users not found`);
+                }
+            });
+    });
     
     it('Should create a new user', done => {
         const userData = {
             username : "Test",
             password : "testpass"
         }
-        chai.request('http://localhost:8080')
+        chai.request(app)
             .post('/signup')
             .send(userData)
             .end((err, res) => {
@@ -35,7 +40,7 @@ describe('User Tests', () => {
                 res.body.should.be.a('object');
                 res.body.should.have.property('message');
                 res.body.should.have.property('newUser');
-                done();               
+                done();
             })
     })
 
@@ -44,7 +49,7 @@ describe('User Tests', () => {
             username : "Test",
             password : "testpass"
         }
-        chai.request('http://localhost:8080')
+        chai.request(app)
             .post('/login')
             .send(userData)
             .end((err, res) => {
