@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import log from 'why-is-node-running';
 import userRoutes from './routes/user';
 import mealRoutes from './routes/meal';
 
@@ -42,8 +41,5 @@ app.get('/', (req, res) => res.send({ welcome: 'This is iMeal' }));
 app.use('/', userRoutes);
 app.use('/', mealRoutes);
 
-setTimeout(function () {
-  log() // logs out active handles that are keeping node running
-}, 100);
 
 module.exports = app;
