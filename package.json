@@ -19,7 +19,7 @@
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "babel-preset-es2015": "^6.24.1",
-    "bcrypt-nodejs": "^0.0.3",
+    "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
@@ -40,9 +40,5 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.17.5"
   },
-  "engines": {
-    "node": "8.9.0",
-    "npm": "6.2.0",
-    "yarn": "1.9.4"
-  }
+  "engines": {}
 }

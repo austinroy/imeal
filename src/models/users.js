@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcrypt';
 import uniqueValidator from 'mongoose-unique-validator';
 
 
@@ -19,7 +19,7 @@ userSchema.pre('save', function save(next) {
     return next();
   }
   // Hash password
-  return bcrypt.hash(user.password, 256, null)
+  return bcrypt.hash(user.password, 256)
     .then((hash, err) => {
       if (err) {
         return next(err);
