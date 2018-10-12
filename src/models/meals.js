@@ -9,6 +9,8 @@ const mealSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  visible: { type: Boolean, default: false },
+  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
 });
 
 const Meal = mongoose.model('Meal', mealSchema);
