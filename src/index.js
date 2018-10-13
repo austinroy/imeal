@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import userRoutes from './routes/user';
 import mealRoutes from './routes/meal';
+import ratingRoutes from './routes/rating';
 
 require('dotenv').config();
 
@@ -40,6 +41,7 @@ mongoose.connect(databaseUrl, () => {
 app.get('/', (req, res) => res.send({ welcome: 'This is iMeal' }));
 app.use('/', userRoutes);
 app.use('/', mealRoutes);
+app.use('/', ratingRoutes);
 
 
 module.exports = app;

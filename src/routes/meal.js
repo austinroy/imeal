@@ -1,5 +1,4 @@
 import express from 'express';
-import Rating from '../models/ratings';
 import Meal from '../models/meals';
 import auth from '../middleware/auth';
 
@@ -78,44 +77,6 @@ router.get('/meals', auth, (req, res) => {
   });
 });
 
-router.post('/rate/:mealid', auth, (req, res) => {
-  const userid = req.decoded.id;
-  const { mealid } = req.params;
-  Rating.find({ user: userid, meal: mealid }, (err, ratings) => {
-    if (err) {
-      return res.status(500).json({
-        message: 'Error making rating',
-      });
-    } if (ratings.length) {
-      return res.status(400).json({
-        message: 'Error: You can only rate a meal once',
-      });
-    }
-    const { rating } = req.body;
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({
-        message: 'All ratings should be between 1 and 5',
-      });
-    }
-    const newRating = {
-      rating,
-      user: userid,
-      meal: mealid,
-    };
-
-    const finalRating = Rating(newRating);
-    return finalRating.save((error) => {
-      if (error) {
-        return res.status(500).json({
-          message: 'Error Saving Rating',
-        });
-      }
-      return res.status(200).json({
-        message: 'Rating Added',
-      });
-    });
-  });
-});
 
 router.get('/:userid/meals/:id', auth, (req, res) => (
   getMeal(req, res)
