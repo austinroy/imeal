@@ -10,8 +10,10 @@ const mealSchema = new mongoose.Schema({
     ref: 'User',
   },
   visible: { type: Boolean, default: false },
-  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating' }],
+  ratings: [{ type: Schema.Types.ObjectId, ref: 'Rating', autopopulate: true }],
 });
+
+mealSchema.plugin(require('mongoose-autopopulate'));
 
 const Meal = mongoose.model('Meal', mealSchema);
 
