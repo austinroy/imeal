@@ -37,7 +37,6 @@ router.post('/rate/:mealid', auth, (req, res) => {
           message: 'Error Saving Rating',
         });
       }
-      console.log(savedRating);
       Meal.update({ _id: mealid }, { $push: { ratings: { $each: [savedRating] } } },
         savErr => console.log(savErr));
       return res.status(200).json({

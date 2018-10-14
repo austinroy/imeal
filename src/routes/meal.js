@@ -34,6 +34,7 @@ router.post('/:userid/meals', auth, (req, res) => {
     name: req.body.name,
     category: req.body.category,
     amount: req.body.amount,
+    visible: req.body.visible,
     userId: userid,
     timeEaten: time,
   };
@@ -89,6 +90,7 @@ router.put('/:userid/meals/:id', auth, (req, res) => (
       meal.name = req.body.name;
       meal.category = req.body.category;
       meal.amount = req.body.amount;
+      meal.visible = req.body.visible;
 
       return meal.save((err) => {
         if (err) {
