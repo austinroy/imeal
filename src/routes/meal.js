@@ -84,6 +84,11 @@ router.get('/:userid/meals/:id', auth, (req, res) => (
     .then(meal => res.status(200).json(meal))
 ));
 
+router.get('/meal/:id', auth, (req, res) => (
+  getMeal(req, res)
+    .then(meal => res.status(200).json(meal))
+));
+
 router.put('/:userid/meals/:id', auth, (req, res) => (
   getMeal(req, res)
     .then((meal) => {
