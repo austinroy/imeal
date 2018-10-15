@@ -23,7 +23,7 @@ if (!PORT || !databaseUrl) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: 'true' }));
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://imeal-client.herokuapp.com/', 'https://imeal-client-qkdakxbgee.now.sh'],
+  origin: ['http://localhost:3000', 'https://imeal-client.herokuapp.com/', 'https://imeal-client-wopkyavvta.now.sh'],
   optionsSuccessStatus: 200,
 }));
 
